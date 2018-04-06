@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="fill_parent"
+android:background="#FFA1091D"
+tools:context="com.example.smithnwokocha.mytictactoe.PlayerNameWithComputer5x5"
+android:fillViewport="true">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+
+    android:background="#FFA1091D"
+    tools:context="com.example.android.tic_tac_toe.PlayerName">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+
+        android:background="@android:color/transparent"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginStart="5dp"
+        android:text="Enter your name:"
+        android:textColor="#FF0929F2"
+        android:textSize="20sp"
+        android:gravity="center_vertical"
+        />
+    <EditText
+        android:id="@+id/player1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Your name"
+        android:textColor="#FFf"
+        android:textColorHint="#fff"
+        android:backgroundTint="#fff"
+        android:layout_marginBottom="20dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginStart="5dp"
+        android:text="Enter the number of games"
+        android:textColor="#FF0929F2"
+        android:textSize="20sp"
+        android:gravity="center_vertical"
+        />
+    <EditText
+        android:id="@+id/numberOfG"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Number of games"
+        android:inputType="number"
+        android:textColor="#FFf"
+        android:textColorHint="#fff"
+        android:backgroundTint="#fff"
+        android:layout_marginBottom="20dp"
+
+        />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.8"
+        android:layout_gravity="center"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:text="ENTER"
+        android:background="#FF0929F2"
+        android:textColor="#fff"
+        android:textSize="16sp"
+        android:onClick="submitName"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.8"
+        android:background="@android:color/transparent"
+        />
+
+
+</LinearLayout>
+</ScrollView>
+

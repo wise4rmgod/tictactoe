@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="fill_parent"
+android:background="#FFA1091D"
+tools:context="com.example.smithnwokocha.mytictactoe.PlayerName"
+android:fillViewport="true">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#FFA1091D"
+    tools:context="com.example.android.tic_tac_toe.PlayerName">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+
+        android:background="@android:color/transparent"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="5dp"
+        android:layout_weight="1"
+        android:text="@string/ask_player1name_text"
+        android:textColor="#FF0929F2"
+        android:textSize="20sp"
+        />
+    <EditText
+        android:id="@+id/player1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:hint="@string/player1name_text_hint"
+        android:textColor="#FFf"
+        android:textColorHint="#fff"
+        android:backgroundTint="#fff"
+        android:layout_marginBottom="20dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="5dp"
+        android:layout_weight="1"
+        android:textColor="#FF0929F2"
+        android:text="@string/ask_player2name_text"
+        android:textSize="20sp"
+        />
+    <EditText
+        android:id="@+id/player2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:hint="@string/player2name_text_hint"
+        android:textColor="#FFf"
+        android:textColorHint="#fff"
+        android:backgroundTint="#fff"
+
+        android:layout_marginBottom="20dp"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginStart="5dp"
+        android:text="@string/ask_numofgames_text"
+        android:textColor="#FF0929F2"
+        android:textSize="20sp"
+        />
+    <EditText
+        android:id="@+id/numberOfG"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:hint="@string/number_of_games_hint"
+        android:inputType="number"
+        android:textColor="#FFf"
+        android:textColorHint="#fff"
+        android:backgroundTint="#fff"
+
+        android:layout_marginBottom="20dp"
+        />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:text="@string/playernames_submit_button"
+        android:background="#FF0929F2"
+        android:textColor="#fff"
+        android:layout_marginEnd="5dp"
+        android:layout_marginStart="5dp"
+        android:textSize="16sp"
+        android:onClick="submitName"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:background="@android:color/transparent"
+        />
+
+
+</LinearLayout>
+</ScrollView>
+

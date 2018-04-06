@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+android:background="#FFA1091D"
+tools:context="com.example.smithnwokocha.mytictactoe.SeriesResult">
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="0dp"
+    android:layout_weight="1"
+    android:text="@string/result_text"
+    android:textAllCaps="true"
+    android:layout_gravity="center"
+    android:textColor="#FF0929F2"
+    android:textSize="40sp"
+    />
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="6"
+    android:orientation="vertical"
+
+
+    >
+    <TextView
+        android:id="@+id/p1name"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="@string/player_1_default_name"
+        android:textAlignment="center"
+        android:textColor="#fff"
+        android:textSize="30sp"
+        android:fontFamily="serif"/>
+    <TextView
+        android:id="@+id/p1wins"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="@string/initial_games_played_0"
+        android:textAlignment="center"
+        android:textColor="#fff"
+        android:textSize="30sp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="@string/bar_demarcate_scores"
+        android:textAlignment="center"
+        android:textColor="#FF0929F2"
+        android:textSize="20sp"/>
+    <TextView
+        android:id="@+id/draws"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="@string/initial_games_played_0"
+        android:textAlignment="center"
+        android:textColor="#fff"
+        android:textSize="30sp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="@string/bar_demarcate_scores"
+        android:textAlignment="center"
+        android:textColor="#FF0929F2"
+        android:textSize="20sp"/>
+    <TextView
+        android:id="@+id/p2wins"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="@string/initial_games_played_0"
+        android:textAlignment="center"
+        android:textColor="#fff"
+        android:textSize="30sp"/>
+    <TextView
+        android:id="@+id/p2name"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="@string/player_2_default_name"
+        android:textAlignment="center"
+        android:textColor="#fff"
+        android:textSize="30sp"
+        android:fontFamily="serif"/>
+
+</LinearLayout>
+
+<Button
+    android:layout_width="wrap_content"
+    android:layout_height="0dp"
+    android:layout_weight="0.7"
+    android:layout_gravity="center"
+    android:text="@string/continue_button_text"
+    android:onClick="onClickContinue"
+    android:textAlignment="center"
+    android:background="#FF0929F2"
+    android:textColor="#fff"
+    android:textSize="20sp"
+    android:padding="4dp"/>
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="0.4"/>
+</LinearLayout>

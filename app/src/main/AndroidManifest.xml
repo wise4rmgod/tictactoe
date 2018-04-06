@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.smithnwokocha.mytictactoe">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".PlayerNameWithComputer" />
+        <activity android:name=".PlayerName" />
+        <activity android:name=".PlayGameWithComputer" />
+        <activity android:name=".SeriesResult" />
+        <activity android:name=".PlayGame" />
+        <activity android:name=".Main2Activity" />
+        <activity android:name=".Main5x5" />
+        <activity android:name=".Computer3x3and5x5" />
+        <activity android:name=".Human3x3and5x5" />
+        <activity android:name=".PlayerNameWithComputer5x5" />
+        <activity android:name=".PlayerName5x5" />
+        <activity android:name=".PlayerName4x4" />
+        <activity android:name=".PlayerNameWithComputer4x4" />
+        <activity android:name=".Humangame4x4" />
+        <activity android:name=".Computergame4x4"></activity>
+    </application>
+
+</manifest>
