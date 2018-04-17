@@ -24,15 +24,24 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+
 // this is the first activity with buttons to enable the user navigate the app and play the game//
 public class MainActivity extends AppCompatActivity {
     final Context context = this;
+    ImageView image;
+    Animation  fadeIn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        image = findViewById(R.id.imageView);
+        fadeIn = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);
 
+        image.startAnimation(fadeIn);
     }
     public void playTwoPGame(View view) {
         Intent intent = new Intent(this,Human3x3and5x5.class);
@@ -43,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
        public void playSinglePGame(View view) {
-        Intent intent = new Intent(this, Computer3x3and5x5.class);
+        Intent intent = new Intent(this, Computer3to5.class);
         if(intent.resolveActivity(getPackageManager())!=null){
             startActivity(intent);
         }

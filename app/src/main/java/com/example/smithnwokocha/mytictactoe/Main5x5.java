@@ -16,669 +16,609 @@
 
 package com.example.smithnwokocha.mytictactoe;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
+import android.media.MediaPlayer;
+import android.os.SystemClock;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.GridLayout;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.Random;
+
 public class Main5x5 extends AppCompatActivity {
-    int turn = 1;
-    int win = 0;
-    int gamov = 0;
-    int flagEndGame=0;
-    int flag;
-    String displayTurn;
-    GridLayout grid;
-    Button playBoard[][] = new Button[5][5];
-    Button tempBoard[][] = new Button[5][5];
-    int boardMatrix[][] = new int[5][5];
-    double probMatrix[][] = new double[5][5];
-    TextView playerTurn;
-    String player1Name;
-    String player2Name;
-    String numberText;
-    int number;
-    int moveNumber=1;
-    int counter = 0;
-    int player1Win = 0, player2Win = 0, draw = 0;
-    int flipValue=0;
-    AlertDialog.Builder builder;
+    Button btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9;
+    Button btn10, btn11, btn12, btn13, btn14, btn15, btn16, btn17, btn18, btn19, btn20, btn21;
+    Button btn22, btn23, btn24, btn25;
+    TextView status, notifyTv;
+    LinearLayout notify;
+    boolean computerTurn = false;
+    boolean isPlay = true;
+    String playerSign = "O";
+    String computerSign = "X";
+    String win;
+    Animation animation, animation2;
+    MediaPlayer player;
+    TextView playerOne, playerTwo, tie, playerOneStat, playerTwoStat, tieStat;
+    Button levelOne, levelTwo, levelThree;
+    int level = 2, playerTurn;
+    SharedPreferences pref;
+    boolean sound = true;
+    ImageButton soundBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main5x5);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        playerTurn = (TextView) findViewById(R.id.player);
-        builder = new AlertDialog.Builder(this);
+        btn1 = findViewById(R.id.btn1);
+        btn2 = findViewById(R.id.btn2);
+        btn3 = findViewById(R.id.btn3);
+        btn4 = findViewById(R.id.btn4);
+        btn5 = findViewById(R.id.btn5);
+        btn6 = findViewById(R.id.btn6);
+        btn7 = findViewById(R.id.btn7);
+        btn8 = findViewById(R.id.btn8);
+        btn9 = findViewById(R.id.btn9);
+        btn10 = findViewById(R.id.btn10);
+        btn11 = findViewById(R.id.btn11);
+        btn12 = findViewById(R.id.btn12);
+        btn13 = findViewById(R.id.btn13);
+        btn14 = findViewById(R.id.btn14);
+        btn15 = findViewById(R.id.btn15);
+        btn16 = findViewById(R.id.btn16);
+        btn17 = findViewById(R.id.btn17);
+        btn18 = findViewById(R.id.btn18);
+        btn19 = findViewById(R.id.btn19);
+        btn20 = findViewById(R.id.btn20);
+        btn21 = findViewById(R.id.btn21);
+        btn22 = findViewById(R.id.btn22);
+        btn23 = findViewById(R.id.btn23);
+        btn24 = findViewById(R.id.btn24);
+        btn25 = findViewById(R.id.btn25);
+
+        status = findViewById(R.id.status);
+        notify = findViewById(R.id.notify);
+        notifyTv = findViewById(R.id.notifyTv);
+
+        playerOne = findViewById(R.id.player_one);
+        playerTwo = findViewById(R.id.player_two);
+        tie = findViewById(R.id.tie);
+        playerOneStat = findViewById(R.id.player_one_stat);
+        playerTwoStat = findViewById(R.id.player_two_stat);
+        tieStat = findViewById(R.id.tie_stat);
+
+        levelOne = findViewById(R.id.level_one);
+        levelTwo = findViewById(R.id.level_two);
+        levelThree = findViewById(R.id.level_three);
+
+        Animation logoAnim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate);
+        logoAnim.setRepeatMode(Animation.REVERSE);
+
+
         Intent intent = getIntent();
-        player1Name = intent.getExtras().getString("Player 1");
-        player2Name = "Computer";
-        numberText = intent.getExtras().getString("Number");
-        number = Integer.parseInt(numberText);
-        grid = (GridLayout) findViewById(R.id.grid);
-        displayTurn=player1Name + "'s turn (X)";
-        playerTurn.setText(displayTurn);
+        playerTurn = intent.getIntExtra("playerTurn", 0);
 
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 5; j++) {
-                playBoard[i][j] = (Button) grid.getChildAt(5 * i + j);
-                boardMatrix[i][j]=0;
-            }
+        switch (playerTurn) {
+            case 0:
+                Random random = new Random();
+                int rand = random.nextInt(10);
+                computerTurn = rand % 2 == 1;
+                break;
+            case 1:
+                computerTurn = false;
+                break;
+            default:
+                computerTurn = true;
+                break;
         }
-        if(flipValue==1){
+
+        if (!computerTurn) {
+            playerSign = "X";
+            computerSign = "O";
+            playerPlay();
+        } else {
+            removeClickListener();
             computerPlay();
-            turn=2;
         }
 
+        playerOne.setText(R.string.computer);
+        playerTwo.setText(R.string.player);
+
+        pref = this.getSharedPreferences("leaderboard5", MODE_PRIVATE);
+        int pOneScore = pref.getInt("pOneScore", 0);
+        int pTwoScore = pref.getInt("pTwoScore", 0);
+        int pTie = pref.getInt("pTie", 0);
+        playerOneStat.setText(String.valueOf(pOneScore));
+        playerTwoStat.setText(String.valueOf(pTwoScore));
+        tieStat.setText(String.valueOf(pTie));
+
+        Dialog dialog = new Dialog(this, R.style.PauseDialog);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.notify);
+
+        animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.zoom);
+        animation2 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.move);
+
+        player = MediaPlayer.create(this, R.raw.play);
+        player.setLooping(false); // Set looping
+        player.setVolume(100, 100);
+
+        final Animation.AnimationListener animationListener = new Animation.AnimationListener() {
+
+            @Override
+            public void onAnimationStart(Animation animation) {
+                player.seekTo(0);
+                player.start();
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+                player.seekTo(0);
+                player.start();
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+            }
+        };
+        animation.setAnimationListener(animationListener);
+
+        findViewById(R.id.reset).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                reset();
+            }
+        });
+
+        findViewById(R.id.close).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                notify.setAnimation(null);
+                notify.setVisibility(View.GONE);
+            }
+        });
+
+
+
+        levelOne.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                level = 1;
+                reset();
+                levelOne.setBackgroundColor(getResources().getColor(R.color.btn));
+                levelOne.setTextColor(getResources().getColor(R.color.black));
+                levelTwo.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                levelTwo.setTextColor(getResources().getColor(R.color.white));
+                levelThree.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                levelThree.setTextColor(getResources().getColor(R.color.white));
+            }
+        });
+
+        levelTwo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                level = 2;
+                reset();
+                levelOne.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                levelOne.setTextColor(getResources().getColor(R.color.white));
+                levelTwo.setBackgroundColor(getResources().getColor(R.color.btn));
+                levelTwo.setTextColor(getResources().getColor(R.color.black));
+                levelThree.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                levelThree.setTextColor(getResources().getColor(R.color.white));
+            }
+        });
+
+        levelThree.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                level = 3;
+                reset();
+                levelOne.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                levelOne.setTextColor(getResources().getColor(R.color.white));
+                levelTwo.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                levelTwo.setTextColor(getResources().getColor(R.color.white));
+                levelThree.setBackgroundColor(getResources().getColor(R.color.btn));
+                levelThree.setTextColor(getResources().getColor(R.color.black));
+            }
+        });
 
     }
 
-    public void playmove(View view) {
-        int index = grid.indexOfChild(view);
-        int i = index / 5;
-        int j = index % 5;
-        flag = 0;
-        if (turn == 1 && gamov == 0 && !(playBoard[i][j].getText().toString().equals("X")) && !(playBoard[i][j].getText().toString().equals("O"))) {
+    boolean tacticalPlay() {
+        int[] col = new int[25];
+        int[] row = new int[25];
+        for (int i = 1; i < 26; i++) {
+            int no = 0, yes = 0;
 
-
-            if(flipValue==0){
-                displayTurn=player2Name + "'s turn (O)";
-                //  Log.v("BoardMatrix",String.valueOf(boardMatrix[0][0])+" "+String.valueOf(boardMatrix[0][1])+" "+String.valueOf(boardMatrix[0][2])+" "+String.valueOf(boardMatrix[1][0])+" "+String.valueOf(boardMatrix[1][1])+" "+String.valueOf(boardMatrix[1][2])+" "+String.valueOf(boardMatrix[2][0])+" "+String.valueOf(boardMatrix[2][1])+" "+String.valueOf(boardMatrix[2][2]));
-                playerTurn.setText(displayTurn);
-                playBoard[i][j].setText("X");
-                boardMatrix[i][j]=1;
-                turn = 2;
-                moveNumber++;
-                computerPlay();
-                turn = 1;
-                displayTurn=player1Name + "'s turn (X)";
-                moveNumber++;
-            }
-
-
-
-        } else if (turn == 2 && gamov == 0 && !(playBoard[i][j].getText().toString().equals("X")) && !(playBoard[i][j].getText().toString().equals("O"))) {
-
-            if(flipValue==1){
-                displayTurn=player2Name + "'s turn (X)";
-                playerTurn.setText(displayTurn);
-                playBoard[i][j].setText("O");
-                boardMatrix[i][j]=1;
-                turn = 1;
-                moveNumber++;
-                computerPlay();
-                displayTurn=player1Name + "'s turn (O)";
-                turn = 2;
-                moveNumber++;
-
-            }
-
-        }
-
-        checkWin();
-        if (gamov == 1) {
-            if (win == 1) {
-                builder.setMessage(player1Name + " wins!").setTitle("Game over");
-                if(flagEndGame==0){
-                    player1Win++;
-                    counter++;
-                }
-
-
-            } else if (win == 2) {
-                builder.setMessage(player2Name + " wins!").setTitle("Game over");
-                if(flagEndGame==0){
-                    player2Win++;
-                    counter++;
-                }
-
-            }
-            flagEndGame=1;
-            builder.setPositiveButton("OK",new DialogInterface.OnClickListener(){
-                public void onClick(DialogInterface dialog, int id){
-                    newGame(new View(getApplicationContext()));
-                    if (counter == number) {
-                        Intent intent = new Intent(getApplicationContext(), SeriesResult.class);
-                        intent.putExtra("Player 1 Wins", player1Win);
-                        intent.putExtra("Player 2 Wins", player2Win);
-                        intent.putExtra("Draws", draw);
-                        intent.putExtra("Player 1 Name", player1Name);
-                        intent.putExtra("Player 2 Name", player2Name);
-                        if (intent.resolveActivity(getPackageManager()) != null) {
-                            startActivity(intent);
-                            finish();
-                        }
-
+            if (i == 1 || i == 2 || i == 3 || i == 4 || i == 5) {
+                for (int j = 0; j < 21; j++) {
+                    int k = i + j;
+                    Button button = findViewById(getResources().getIdentifier("btn" + k, "id", this.getPackageName()));
+                    if (button.getText().equals(computerSign))
+                        yes++;
+                    if (button.getText().equals(playerSign))
+                        no++;
+                    if (j == 20 && no == 0) {
+                        Log.v("PPP", String.valueOf(i));
+                        col[i] = yes;
                     }
+                    j += 4;
                 }
+            }
 
-            });
-            AlertDialog dialog = builder.create();
-            dialog.show();
+            no = yes = 0;
 
-
-
-        }
-        if (gamov == 0) {
-            for (i = 0; i < 5; i++) {
-                for (j = 0; j < 5; j++) {
-                    if (!playBoard[i][j].getText().toString().equals("X") && !playBoard[i][j].getText().toString().equals("O")) {
-                        flag = 1;
-                        break;
-
+            if (i == 1 || i == 6 || i == 11 || i == 16 || i == 21) {
+                for (int j = 0; j < 5; j++) {
+                    int k = i + j;
+                    Button button = findViewById(getResources().getIdentifier("btn" + k, "id", this.getPackageName()));
+                    if (button.getText().equals(computerSign))
+                        yes++;
+                    if (button.getText().equals(playerSign))
+                        no++;
+                    if (j == 4 && no == 0) {
+                        Log.v("PPPr", String.valueOf(i));
+                        row[i] = yes;
                     }
                 }
             }
-            if (flag == 0) {
-                builder.setMessage("It's a draw!").setTitle("Game over");
-                if(flagEndGame==0){
-                    counter++;
-                    draw++;
-                }
-                flagEndGame=1;
-                builder.setPositiveButton("OK",new DialogInterface.OnClickListener(){
-                    public void onClick(DialogInterface dialog, int id){
-
-                        if (counter == number) {
-                            Intent intent = new Intent(getApplicationContext(), SeriesResult.class);
-                            intent.putExtra("Player 1 Wins", player1Win);
-                            intent.putExtra("Player 2 Wins", player2Win);
-                            intent.putExtra("Draws", draw);
-                            intent.putExtra("Player 1 Name", player1Name);
-                            intent.putExtra("Player 2 Name", player2Name);
-                            if (intent.resolveActivity(getPackageManager()) != null) {
-                                startActivity(intent);
-                                finish();
-                            }
-
-                        }
-                        else {
-                            newGame(new View(getApplicationContext()));
-                        }
-                    }
-
-                });
-                AlertDialog dialog = builder.create();
-                dialog.show();
-
-
-            }
-
-
         }
+        int[] indexCol = getIndexOfLargest(col);
+        int[] indexRow = getIndexOfLargest(row);
 
+        if (indexCol[0] == 0 && indexRow[0] == 0)
+            return false;
 
+        if (indexCol[1] > indexRow[1]) {
+            int j = indexCol[0];
+            for (int i = 0; i < 21; i++) {
+                int k = j + i;
+                Button buttonPlay = findViewById(getResources().getIdentifier("btn" + k, "id", this.getPackageName()));
+                if (buttonPlay.getText().equals("")) {
+                    buttonPlay.setText(computerSign);
+                    buttonPlay.startAnimation(animation);
+                    return true;
+                }
+                i += 4;
+            }
+        } else {
+            int j = indexRow[0];
+            for (int i = 0; i < 5; i++) {
+                int k = j + i;
+                Button buttonPlay = findViewById(getResources().getIdentifier("btn" + k, "id", this.getPackageName()));
+                if (buttonPlay.getText().equals("")) {
+                    buttonPlay.setText(computerSign);
+                    buttonPlay.startAnimation(animation);
+                    return true;
+                }
+            }
+        }
+        return false;
     }
-    int level=0;
-    public void randomPlay(){
-        int random = (int)(Math.random()*25);
-        int i=random/5;
-        int j=random%5;
-        playBoard[i][j].setText("X");
-        boardMatrix[i][j]=1;
 
-
-
+    private int[] getIndexOfLargest(int[] array) {
+        int[] largest = new int[2];
+        int[] none = {0, 0};
+        if (array == null || array.length == 0) return none;
+        int l = 0;
+        for (int i = 1; i < array.length; i++) {
+            if (array[i] > array[l]) l = i;
+        }
+        largest[0] = l;
+        largest[1] = array[l];
+        return largest;
     }
-    public void computerPlay(){
-        int currentTurn = turn;
-        int currentMove = moveNumber;
-        int i=0,j=0;
-        int moveChoice=0;
-        int flag=0;
-        int flagGameNotOver=0;
 
-        int counter=0;
-        double sum=0;
-        if(turn==1){
-            turn=2;
+    void randomPlay() {
+        while (true) {
+            Random random = new Random();
+            int rand = random.nextInt(25) + 1;
+            Button button = findViewById(getResources().getIdentifier("btn" + rand, "id", getPackageName()));
+            if (button.getText().equals("")) {
+                button.setText(computerSign);
+                button.startAnimation(animation);
+                break;
+            }
         }
-        else{
-            turn=1;
-        }
-        for(int c=0;c<25;c++){
-            i=c/5;
-            j=c%5;
-            //  tempBoard[i][j].setText(playBoard[i][j].getText().toString());
-            probMatrix[i][j]=0;
-        }
+    }
 
-        for(int c=0; c<25;c++) {
-            i = c / 5;
-            j = c % 5;
-            if (boardMatrix[i][j] == 0) {
-                flagGameNotOver=1;
-                // Log.e("INCP", "I got "+String.valueOf(i)+" "+String.valueOf(j));
-                boardMatrix[i][j] = 1;
-                if (flipValue == 1)
-                    playBoard[i][j].setText("X");
-                else
-                    playBoard[i][j].setText("O");
-                if (checkWinComp() == 2 && flipValue == 0) {
-                    flag=1;
-                    playBoard[i][j].setText(" ");
-                    boardMatrix[i][j] = 0;
-                    break;
-                } else if (checkWinComp() == 2 && flipValue == 1) {
-                    flag=1;
-                    playBoard[i][j].setText(" ");
-                    boardMatrix[i][j] = 0;
-                    break;
-                }
-                if (checkWinComp() == 1 && flipValue == 1) {
-                    playBoard[i][j].setText(" ");
-                    //  Log.v("CP","I came to the first if");
-                    boardMatrix[i][j] = 0;
-                    continue;
-                } else if (checkWinComp() == 1 && flipValue == 0) {
-                    playBoard[i][j].setText(" ");
-                    //   Log.v("CP","I came to the second if");
-                    boardMatrix[i][j] = 0;
-                    continue;
-
+    boolean playToWin() {
+        for (int i = 1; i < 26; i++) {
+            Button button = findViewById(getResources().getIdentifier("btn" + i, "id", this.getPackageName()));
+            if (button.getText() == "") {
+                button.setText(computerSign);
+                if (checkWin(computerSign)) {
+                    button.startAnimation(animation);
+                    setNotify(win, 1);
+                    return true;
                 } else {
-                    level++;
-                    probMatrix[i][j]=computerAnalyze();
-                    //    double value = computerAnalyze();
-//                    sum+=value;
-//                    counter++;
-                    level--;
-                    //   Log.v("CP","Analysis has been done! " + String.valueOf(i)+" "+String.valueOf(j));
-
+                    button.setText("");
                 }
-                playBoard[i][j].setText(" ");
-                boardMatrix[i][j] = 0;
-                //probMatrix[i][j]=sum;
-
             }
         }
-        if(flagGameNotOver==0){
+        return false;
+    }
+
+    boolean playToBlock() {
+        for (int i = 1; i < 26; i++) {
+            Button button = findViewById(getResources().getIdentifier("btn" + i, "id", this.getPackageName()));
+            if (button.getText() == "") {
+                button.setText(playerSign);
+                if (checkWin(playerSign)) {
+                    button.setText(computerSign);
+                    button.startAnimation(animation);
+                    return true;
+                } else {
+                    button.setText("");
+                }
+            }
+        }
+        return false;
+    }
+
+    void removeClickListener() {
+        for (int i = 1; i < 26; i++) {
+            Button button = findViewById(getResources().getIdentifier("btn" + i, "id", getPackageName()));
+            button.setOnClickListener(null);
+        }
+    }
+
+    void playerPlay() {
+
+        if (!isPlay)
             return;
-        }
-        double maxProb=0;
-        if(flag==0){
-            for(int p=0;p<5;p++){
-                for(int q=0;q<5;q++){
-                    if(maxProb<probMatrix[p][q]){
-                        maxProb=probMatrix[p][q];
+
+        status.setText(R.string.player_turn);
+
+        for (int i = 1; i < 26; i++) {
+            final Button button = findViewById(getResources().getIdentifier("btn" + i, "id", getPackageName()));
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (button.getText() == "") {
+                        button.startAnimation(animation);
+                        button.setText(playerSign);
+                        removeClickListener();
+                        if (checkWin(playerSign)) {
+                            setNotify(win, 2);
+                            return;
+                        }
+                        computerPlay();
                     }
                 }
-            }
-            for(int p=0;p<5;p++){
-                for(int q=0;q<5;q++){
-                    if(maxProb==probMatrix[p][q] && boardMatrix[p][q]==0){
-                        moveChoice=5*p+q;
-                        break;
-                    }
-                }
-            }
-        }
-        else{
-            moveChoice=5*i+j;
-        }
-        turn = currentTurn;
-        moveNumber = currentMove;
-        int xCoord=moveChoice/5;
-        int yCoord=moveChoice%5;
-        boardMatrix[xCoord][yCoord]=1;
-        if(flipValue==0){
-            playBoard[xCoord][yCoord].setText("O");
-            displayTurn=player1Name+"'s turn (X)";
-            playerTurn.setText(displayTurn);
-        }
-        else{
-            playBoard[xCoord][yCoord].setText("X");
-            displayTurn=player1Name+"'s turn (O)";
-            playerTurn.setText(displayTurn);
-        }
-
-        //  Log.v("CP","I have moved!!! "+ String.valueOf(xCoord)+" "+String.valueOf(yCoord)+" "+String.valueOf(boardMatrix[xCoord][yCoord])+" "+String.valueOf(probMatrix[xCoord][yCoord]));
-        //  Log.v("CP",String.valueOf(probMatrix[0][0])+" "+String.valueOf(probMatrix[0][1])+" "+String.valueOf(probMatrix[0][2])+" "+String.valueOf(probMatrix[1][0])+" "+String.valueOf(probMatrix[1][1])+" "+String.valueOf(probMatrix[1][2])+" "+String.valueOf(probMatrix[2][0])+" "+String.valueOf(probMatrix[2][1])+" "+String.valueOf(probMatrix[2][2]));
-
-    }
-
-    public double computerAnalyze() {
-        double sum=0;
-        int counter=0;
-        int flagCheckGameNotOver=0;
-        for(int c=0;c<25;c++){
-            int i=c/5;
-            int j=c%5;
-
-            if(boardMatrix[i][j]==0){
-                flagCheckGameNotOver=1;
-                boardMatrix[i][j]=1;
-
-                if(turn==1)
-                    playBoard[i][j].setText("X");
-                else
-                    playBoard[i][j].setText("O");
-                if(checkWinComp()==2 && flipValue==0){
-                    sum=1;
-                    //    Log.v("INCA","First If "+String.valueOf(i)+" "+String.valueOf(j)+" "+String.valueOf(level)+" "+String.valueOf(turn));
-                    playBoard[i][j].setText(" ");
-                    boardMatrix[i][j]=0;
-
-                    return sum;
-                }
-                else if(checkWinComp()==2 && flipValue==1){
-                    sum=1;
-                    //    Log.v("INCA","Second If "+String.valueOf(i)+" "+String.valueOf(j)+" "+String.valueOf(level)+" "+String.valueOf(turn));
-                    playBoard[i][j].setText(" ");
-                    boardMatrix[i][j]=0;
-
-                    return sum;
-                }
-                else if(checkWinComp()==1 && flipValue==1){
-                    sum=0;
-                    //    Log.v("INCA","Third Iff "+String.valueOf(i)+" "+String.valueOf(j)+" "+String.valueOf(level)+" "+String.valueOf(turn));
-                    playBoard[i][j].setText(" ");
-                    boardMatrix[i][j]=0;
-
-                    return sum;
-                }
-                else if(checkWinComp()==1 && flipValue==0){
-                    sum=0;
-                    //    Log.v("INCA","Fourth If "+String.valueOf(i)+" "+String.valueOf(j)+" "+String.valueOf(level)+" "+String.valueOf(turn));
-                    playBoard[i][j].setText(" ");
-                    boardMatrix[i][j]=0;
-
-                    return sum;
-                }
-                else {
-                    //    Log.v("INCA","In Else "+String.valueOf(i)+" "+String.valueOf(j)+" "+String.valueOf(level)+" "+String.valueOf(turn));
-                    counter++;
-                    if(turn==1){
-                        turn=2;
-                    }
-                    else{
-                        turn=1;
-                    }
-                    level++;
-                    double value=computerAnalyze();
-                    level--;
-                    sum+=value;
-                    //   Log.v("INCA",String.valueOf(sum));
-
-                }
-                playBoard[i][j].setText(" ");
-                boardMatrix[i][j]=0;
-                if(turn==1){
-                    turn=2;
-                }
-                else{
-                    turn=1;
-                }
-            }
-
-        }
-        //  Log.v("SUMC",String.valueOf(sum)+" "+String.valueOf(counter));
-        if(flagCheckGameNotOver==0){
-            return 0.5;
-        }
-        double average = ((double) sum)/ ((double) counter);
-        return average;
-    }
-
-    public void newGame(View view) {
-
-        win = 0;
-        gamov = 0;
-        turn=1;
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 5; j++) {
-                playBoard[i][j].setText(" ");
-                playBoard[i][j].setTextColor(Color.WHITE);
-                boardMatrix[i][j]=0;
-            }
-        }
-
-        if(flipValue==0){
-            if(flagEndGame==1){
-                flipValue=1;
-                displayTurn=player2Name + "'s turn (X)";
-                playerTurn.setText(displayTurn);
-            }
-            else{
-                displayTurn=player1Name + "'s turn (X)";
-                playerTurn.setText(displayTurn);
-            }
-
-
-        }
-        else if(flipValue==1 ){
-            if(flagEndGame==1){
-                flipValue=0;
-                displayTurn=player1Name + "'s turn (X)";
-                playerTurn.setText(displayTurn);
-            }
-            else{
-                displayTurn=player2Name + "'s turn (X)";
-                playerTurn.setText(displayTurn);
-            }
-
-
-
-        }
-        flagEndGame=0;
-        if(flipValue==1){
-            //    Log.e("INNEW","I am here to create a new game with computer x!");
-            randomPlay();
-            //    Log.e("INNEW","I am out!");
-            turn=2;
+            });
         }
     }
 
-    public void checkWin() {
-        for (int i = 0; i < 5; i++) {
-            if (playBoard[i][0].getText().toString().equals(playBoard[i][1].getText().toString()) && playBoard[i][0].getText().toString().equals(playBoard[i][2].getText().toString())  && playBoard[i][0].getText().toString().equals(playBoard[i][3].getText().toString())  && playBoard[i][0].getText().toString().equals(playBoard[i][4].getText().toString()) ) {
-                if (playBoard[i][0].getText().toString().equals("X")) {
-                    gamov = 1;
-                    if(flipValue==0)
-                        win = 1;
-                    else if(flipValue==1)
-                        win=2;
+    void computerPlay() {
 
+        if (!isPlay)
+            return;
 
-                } else if (playBoard[i][0].getText().toString().equals("O")) {
-                    gamov = 1;
-                    if(flipValue==0)
-                        win = 2;
-                    else if(flipValue==1)
-                        win=1;
-
-                }
-                if (!playBoard[i][0].getText().toString().equals(" ")) {
-                    playBoard[i][0].setTextColor(Color.RED);
-                    playBoard[i][1].setTextColor(Color.RED);
-                    playBoard[i][2].setTextColor(Color.RED);
-                    playBoard[i][3].setTextColor(Color.RED);
-                    playBoard[i][4].setTextColor(Color.RED);
-
-                }
-
-            }
-            if (playBoard[0][i].getText().toString().equals(playBoard[1][i].getText().toString()) && playBoard[0][i].getText().toString().equals(playBoard[2][i].getText().toString()) && playBoard[0][i].getText().toString().equals(playBoard[3][i].getText().toString()) && playBoard[0][i].getText().toString().equals(playBoard[4][i].getText().toString()) ) {
-                if (playBoard[0][i].getText().toString().equals("X")) {
-                    gamov = 1;
-                    if(flipValue==0)
-                        win = 1;
-                    else if(flipValue==1)
-                        win=2;
-
-
-                } else if (playBoard[0][i].getText().toString().equals("O")) {
-                    gamov = 1;
-                    if(flipValue==0)
-                        win = 2;
-                    else if(flipValue==1)
-                        win=1;
-
-                }
-                if (!playBoard[0][i].getText().toString().equals(" ")) {
-                    playBoard[0][i].setTextColor(Color.RED);
-                    playBoard[1][i].setTextColor(Color.RED);
-                    playBoard[2][i].setTextColor(Color.RED);
-                    playBoard[3][i].setTextColor(Color.RED);
-                    playBoard[4][i].setTextColor(Color.RED);
-                }
-
-            }
-
-
+        switch (level) {
+            case 1:
+                computerPlayEasy();
+                break;
+            case 2:
+                computerPlayMedim();
+                break;
+            case 3:
+                computerPlayHard();
+                break;
         }
-        if (playBoard[0][0].getText().toString().equals(playBoard[1][1].getText().toString()) && playBoard[0][0].getText().toString().equals(playBoard[2][2].getText().toString()) && playBoard[0][0].getText().toString().equals(playBoard[3][3].getText().toString()) && playBoard[0][0].getText().toString().equals(playBoard[4][4].getText().toString()) ) {
-            if (playBoard[0][0].getText().toString().equals("X")) {
-                gamov = 1;
-                if(flipValue==0)
-                    win = 1;
-                else if(flipValue==1)
-                    win=2;
 
+    }
 
-            } else if (playBoard[0][0].getText().toString().equals("O")) {
-                gamov = 1;
-                if(flipValue==0)
-                    win = 2;
-                else if(flipValue==1)
-                    win=1;
+    void computerPlayHard() {
 
+        status.setText(R.string.computer_turn);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                SystemClock.sleep(1500);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (playToWin())
+                            return;
+                        if (!playToBlock())
+                            if (!tacticalPlay())
+                                randomPlay();
+                        if (!checkWin(computerSign))
+                            playerPlay();
+
+                    }
+                });
             }
-            if (!playBoard[0][0].getText().toString().equals(" ")) {
-                playBoard[0][0].setTextColor(Color.RED);
-                playBoard[1][1].setTextColor(Color.RED);
-                playBoard[2][2].setTextColor(Color.RED);
-                playBoard[3][3].setTextColor(Color.RED);
-                playBoard[4][4].setTextColor(Color.RED);
+        }).start();
+    }
+
+    void computerPlayMedim() {
+
+        status.setText(R.string.computer_turn);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                SystemClock.sleep(1500);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (playToWin())
+                            return;
+                        if (!playToBlock())
+                            randomPlay();
+                        if (!checkWin(computerSign))
+                            playerPlay();
+
+                    }
+                });
             }
+        }).start();
+    }
 
+    void computerPlayEasy() {
 
+        status.setText(R.string.computer_turn);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                SystemClock.sleep(1500);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (!playToWin())
+                            randomPlay();
+                        if (!checkWin(computerSign))
+                            playerPlay();
+                    }
+                });
+            }
+        }).start();
+    }
+
+    boolean checkWin(String sign) {
+
+        if (!isPlay)
+            return false;
+
+        return
+                areEqual(btn1.getText().toString(), btn2.getText().toString(), btn3.getText().toString(),
+                        btn4.getText().toString(), btn5.getText().toString(), sign) ||
+
+                        areEqual(btn6.getText().toString(), btn7.getText().toString(), btn8.getText().toString(),
+                                btn9.getText().toString(), btn10.getText().toString(), sign) ||
+
+                        areEqual(btn11.getText().toString(), btn12.getText().toString(), btn13.getText().toString(),
+                                btn14.getText().toString(), btn15.getText().toString(), sign) ||
+
+                        areEqual(btn16.getText().toString(), btn17.getText().toString(), btn18.getText().toString(),
+                                btn19.getText().toString(), btn20.getText().toString(), sign) ||
+
+                        areEqual(btn21.getText().toString(), btn22.getText().toString(), btn23.getText().toString(),
+                                btn24.getText().toString(), btn25.getText().toString(), sign) ||
+
+                        areEqual(btn1.getText().toString(), btn6.getText().toString(), btn11.getText().toString(),
+                                btn16.getText().toString(), btn21.getText().toString(), sign) ||
+
+                        areEqual(btn2.getText().toString(), btn7.getText().toString(), btn12.getText().toString(),
+                                btn17.getText().toString(), btn22.getText().toString(), sign) ||
+
+                        areEqual(btn3.getText().toString(), btn8.getText().toString(), btn13.getText().toString(),
+                                btn18.getText().toString(), btn23.getText().toString(), sign) ||
+
+                        areEqual(btn4.getText().toString(), btn9.getText().toString(), btn14.getText().toString(),
+                                btn19.getText().toString(), btn24.getText().toString(), sign) ||
+
+                        areEqual(btn5.getText().toString(), btn10.getText().toString(), btn15.getText().toString(),
+                                btn20.getText().toString(), btn25.getText().toString(), sign) ||
+
+                        areEqual(btn1.getText().toString(), btn7.getText().toString(), btn13.getText().toString(),
+                                btn19.getText().toString(), btn25.getText().toString(), sign) ||
+
+                        areEqual(btn5.getText().toString(), btn9.getText().toString(), btn13.getText().toString(),
+                                btn17.getText().toString(), btn21.getText().toString(), sign) ||
+
+                        gameOver();
+    }
+
+    boolean areEqual(String a, String b, String c, String d, String e, String sign) {
+        Boolean check = (sign.equals(a) && sign.equals(b) && sign.equals(c) && sign.equals(d) && sign.equals(e));
+        if (check && sign.equals(computerSign)) {
+            win = "Computer wins";
         }
-        if (playBoard[0][4].getText().toString().equals(playBoard[1][3].getText().toString()) && playBoard[0][4].getText().toString().equals(playBoard[2][2].getText().toString()) && playBoard[0][4].getText().toString().equals(playBoard[3][1].getText().toString())  && playBoard[0][4].getText().toString().equals(playBoard[4][0].getText().toString()) ) {
-            if (playBoard[0][4].getText().toString().equals("X")) {
-                gamov = 1;
-                if(flipValue==0)
-                    win = 1;
-                else if(flipValue==1)
-                    win=2;
+        if (check && sign.equals(playerSign)) {
+            win = "Player wins";
+        }
+        return check;
+    }
 
+    boolean gameOver() {
 
-            } else if (playBoard[0][4].getText().toString().equals("O")) {
-                gamov = 1;
-                if(flipValue==0)
-                    win = 2;
-                else if(flipValue==1)
-                    win=1;
+        int p = 0;
+        for (int i = 1; i < 26; i++) {
+            Button button = findViewById(getResources().getIdentifier("btn" + i, "id", getPackageName()));
+            if (!button.getText().equals(""))
+                p++;
+        }
+        if (p == 25) {
+            win = "It's a tie";
+            setNotify(win, 0);
+            isPlay = false;
+        }
+        return false;
+    }
 
-            }
-            if (!playBoard[4][0].getText().toString().equals(" ")) {
-                playBoard[4][0].setTextColor(Color.RED);
-                playBoard[3][1].setTextColor(Color.RED);
-                playBoard[2][2].setTextColor(Color.RED);
-                playBoard[1][3].setTextColor(Color.RED);
-                playBoard[0][4].setTextColor(Color.RED);
-            }
+    void setNotify(String win, int player) {
+        status.setText(win);
+        notifyTv.setText(win);
+        notify.setVisibility(View.VISIBLE);
+        animation2 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.move);
+        notify.setAnimation(animation2);
 
-
+        if (player == 0) {
+            int stat = Integer.parseInt(tieStat.getText().toString()) + 1;
+            tieStat.setText(String.valueOf(stat));
+            pref.edit().putInt("pTie", stat).apply();
+        } else if (player == 1) {
+            int stat = Integer.parseInt(playerOneStat.getText().toString()) + 1;
+            playerOneStat.setText(String.valueOf(stat));
+            pref.edit().putInt("pOneScore", stat).apply();
+        } else if (player == 2) {
+            int stat = Integer.parseInt(playerTwoStat.getText().toString()) + 1;
+            playerTwoStat.setText(String.valueOf(stat));
+            pref.edit().putInt("pTwoScore", stat).apply();
         }
     }
 
-    public int checkWinComp() {
-        for (int i = 0; i < 5; i++) {
-            if (playBoard[i][0].getText().toString().equals(playBoard[i][1].getText().toString()) && playBoard[i][0].getText().toString().equals(playBoard[i][2].getText().toString()) && playBoard[i][0].getText().toString().equals(playBoard[i][3].getText().toString()) && playBoard[i][0].getText().toString().equals(playBoard[i][4].getText().toString()) ) {
-                if (playBoard[i][0].getText().toString().equals("X")) {
-
-                    if(flipValue==0)
-                        return 1;
-                    else if(flipValue==1)
-                        return 2;
-
-
-                } else if (playBoard[i][0].getText().toString().equals("O")) {
-
-                    if(flipValue==0)
-                        return 2;
-                    else if(flipValue==1)
-                        return 1;
-
-                }
-
-
-            }
-            if (playBoard[0][i].getText().toString().equals(playBoard[1][i].getText().toString()) && playBoard[0][i].getText().toString().equals(playBoard[2][i].getText().toString())  && playBoard[0][i].getText().toString().equals(playBoard[3][i].getText().toString())  && playBoard[0][i].getText().toString().equals(playBoard[4][i].getText().toString()) ) {
-                if (playBoard[0][i].getText().toString().equals("X")) {
-
-                    if(flipValue==0)
-                        return 1;
-                    else if(flipValue==1)
-                        return 2;
-
-
-                } else if (playBoard[0][i].getText().toString().equals("O")) {
-
-                    if(flipValue==0)
-                        return 2;
-                    else if(flipValue==1)
-                        return 1;
-
-                }
-
-
-            }
-
-
-        }
-        if (playBoard[0][0].getText().toString().equals(playBoard[1][1].getText().toString()) && playBoard[0][0].getText().toString().equals(playBoard[2][2].getText().toString()) && playBoard[0][0].getText().toString().equals(playBoard[3][3].getText().toString()) && playBoard[0][0].getText().toString().equals(playBoard[4][4].getText().toString()) ) {
-            if (playBoard[0][0].getText().toString().equals("X")) {
-
-                if(flipValue==0)
-                    return 1;
-                else if(flipValue==1)
-                    return 2;
-
-
-            } else if (playBoard[0][0].getText().toString().equals("O")) {
-
-                if(flipValue==0)
-                    return 2;
-                else if(flipValue==1)
-                    return 1;
-
-            }
-
-
-
+    void reset() {
+        isPlay = true;
+        notify.setAnimation(null);
+        notify.setVisibility(View.GONE);
+        for (int i = 1; i < 26; i++) {
+            Button button = findViewById(getResources().getIdentifier("btn" + i, "id", getPackageName()));
+            button.setText("");
         }
 
-        if (playBoard[0][4].getText().toString().equals(playBoard[1][3].getText().toString()) && playBoard[0][4].getText().toString().equals(playBoard[2][2].getText().toString()) && playBoard[0][4].getText().toString().equals(playBoard[3][1].getText().toString())  && playBoard[0][4].getText().toString().equals(playBoard[4][0].getText().toString()) ) {
-            if (playBoard[0][4].getText().toString().equals("X")) {
-                if(flipValue==0)
-                    return 1;
-                else if(flipValue==1)
-                    return 2;
-
-
-            } else if (playBoard[0][4].getText().toString().equals("O")) {
-
-                if(flipValue==0)
-                    return 2;
-                else if(flipValue==1)
-                    return 1;
-
-            }
-
-
-
+        switch (playerTurn) {
+            case 0:
+                Random random = new Random();
+                int rand = random.nextInt(10);
+                computerTurn = rand % 2 == 1;
+                break;
+            case 1:
+                computerTurn = false;
+                break;
+            default:
+                computerTurn = true;
+                break;
         }
-        return 0;
+
+        if (!computerTurn) {
+            playerSign = "X";
+            computerSign = "O";
+            playerPlay();
+        } else {
+            removeClickListener();
+            computerPlay();
+        }
     }
     }
 

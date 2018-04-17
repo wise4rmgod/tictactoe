@@ -16,21 +16,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PlayerNameWithComputer" />
         <activity android:name=".PlayerName" />
         <activity android:name=".PlayGameWithComputer" />
         <activity android:name=".SeriesResult" />
         <activity android:name=".PlayGame" />
         <activity android:name=".Main2Activity" />
         <activity android:name=".Main5x5" />
-        <activity android:name=".Computer3x3and5x5" />
         <activity android:name=".Human3x3and5x5" />
-        <activity android:name=".PlayerNameWithComputer5x5" />
         <activity android:name=".PlayerName5x5" />
         <activity android:name=".PlayerName4x4" />
-        <activity android:name=".PlayerNameWithComputer4x4" />
         <activity android:name=".Humangame4x4" />
-        <activity android:name=".Computergame4x4"></activity>
+        <activity android:name=".Computergame4x4" />
+        <activity android:name=".Computer3to5"></activity>
     </application>
 
 </manifest>

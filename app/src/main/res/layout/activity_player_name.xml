@@ -31,8 +31,7 @@ android:fillViewport="true">
     <EditText
         android:id="@+id/player1"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:hint="@string/player1name_text_hint"
         android:textColor="#FFf"
         android:textColorHint="#fff"
@@ -50,8 +49,7 @@ android:fillViewport="true">
     <EditText
         android:id="@+id/player2"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:hint="@string/player2name_text_hint"
         android:textColor="#FFf"
         android:textColorHint="#fff"
@@ -71,14 +69,12 @@ android:fillViewport="true">
     <EditText
         android:id="@+id/numberOfG"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:hint="@string/number_of_games_hint"
         android:inputType="number"
         android:textColor="#FFf"
         android:textColorHint="#fff"
         android:backgroundTint="#fff"
-
         android:layout_marginBottom="20dp"
         />
     <Button

@@ -16,17 +16,31 @@
 
 package com.example.smithnwokocha.mytictactoe;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
+import android.media.MediaPlayer;
+import android.net.Uri;
+import android.os.SystemClock;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.GridLayout;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import java.util.Random;
+
 //   this activity handles the function for human to play with the system  //
 public class PlayGame extends AppCompatActivity {
     int turn = 1;
@@ -46,12 +60,17 @@ public class PlayGame extends AppCompatActivity {
     int player1Win = 0, player2Win = 0, draw = 0;
     int flipValue=0;
     AlertDialog.Builder builder;
-
+    ImageView image;
+    Animation  fadeIn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_game);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        image = findViewById(R.id.imageView);
+        fadeIn = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);
+
+        image.startAnimation(fadeIn);
         playerTurn = (TextView) findViewById(R.id.player);
         builder = new AlertDialog.Builder(this);
         Intent intent = getIntent();
@@ -343,4 +362,5 @@ public class PlayGame extends AppCompatActivity {
 
         }
     }
+
 }

@@ -250,7 +250,6 @@ android:fillViewport="true">
             android:id="@+id/res"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-
             android:text="RESET GAME"
             android:onClick="newGame"
             android:background="#FF0929F2"

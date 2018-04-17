@@ -24,36 +24,36 @@
 
 
            <Button
-            android:id="@+id/button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="90dp"
-            android:background="#FF0929F2"
-            android:onClick="playSinglePGame"
-            android:text="SINGLE PLAYER"
-            android:textColor="#fff"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            tools:layout_editor_absoluteX="10dp"
-            tools:layout_editor_absoluteY="195dp" />
+               android:id="@+id/button"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginEnd="10dp"
+               android:layout_marginStart="10dp"
+               android:layout_marginTop="90dp"
+               android:background="#FF0929F2"
+               android:onClick="playSinglePGame"
+               android:text="VS COMPUTER"
+               android:textColor="#fff"
+               android:textSize="20sp"
+               android:textStyle="bold"
+               tools:layout_editor_absoluteX="10dp"
+               tools:layout_editor_absoluteY="195dp" />
 
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp"
-            android:background="#FF0929F2"
-            android:onClick="playTwoPGame"
-            android:text="TWO PLAYER"
-            android:textColor="#fff"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            tools:layout_editor_absoluteX="133dp"
-            tools:layout_editor_absoluteY="278dp" />
+           <Button
+               android:id="@+id/button2"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginEnd="10dp"
+               android:layout_marginStart="10dp"
+               android:layout_marginTop="5dp"
+               android:background="#FF0929F2"
+               android:onClick="playTwoPGame"
+               android:text="VS HUMAN"
+               android:textColor="#fff"
+               android:textSize="20sp"
+               android:textStyle="bold"
+               tools:layout_editor_absoluteX="133dp"
+               tools:layout_editor_absoluteY="278dp" />
 
         <Button
             android:id="@+id/button3"
